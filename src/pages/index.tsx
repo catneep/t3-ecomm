@@ -8,17 +8,15 @@ import Product from "../models/Product";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-  // const productTest = trpc.products.getByID.useQuery( {id: "my-id"});
-  const productsTest = trpc.products.getAll.useQuery();
-
+  const allProducts = trpc.products.getAll.useQuery();  
+  const postMutation = trpc.products.add.useMutation();
+  const deleteMutation = trpc.products.removeAll.useMutation();
   
-  const mutation = trpc.products.add.useMutation()
-  
-  const handleMutation = () => {
+  const handleNewEntry = () => {
     // Generates a product with default values
     const testProduct = new Product();
 
-    mutation.mutate({
+    postMutation.mutate({
       id: testProduct.id,
       name: testProduct.name,
       description: testProduct.description,
@@ -27,6 +25,8 @@ const Home: NextPage = () => {
       inventory: testProduct.inventory,
     })
   }
+
+  const handleWipeAll = () => deleteMutation.mutate();
 
   return (
     <>
@@ -56,25 +56,28 @@ const Home: NextPage = () => {
         <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
-        <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
+        <div className="flex flex-wrap w-full items-center justify-center pt-6">
           {
-            productsTest.data
-            ? <>
-                <p>My products:</p>
-                <ul>
+            allProducts.data
+            ? <div>
+                <p className="w-full text-2xl text-blue-500">
+                  My products:
+                </p>
+                <ul className="w-full">
                 {
-                  productsTest.data.map(
+                  allProducts.data.map(
                     (product, i) =>
                     <li key={i}>{product.name}</li>
                     )
                   }
                 </ul>
-              </>
+              </div>
             : <p>Getting all products...</p>
           }
         </div>
-        <div>
-          <button onClick={handleMutation}>Mutate</button>
+        <div className="flex justify-evenly w-full">
+          <button onClick={handleNewEntry}>Create new entry</button>
+          <button onClick={handleWipeAll}>Wipe DB</button>
         </div>
       </main>
     </>

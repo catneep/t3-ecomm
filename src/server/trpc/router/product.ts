@@ -87,7 +87,7 @@ export const productRouter = router({
 
   removeAll: publicProcedure
   .mutation( async ({ctx}) => {
-    const product = await ctx.prisma.product.deleteMany();
+    const product = await ctx.prisma.product.deleteMany({});
     return product;
   }),
   
