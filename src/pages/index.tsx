@@ -19,7 +19,7 @@ const Home: NextPage = () => {
     const testProduct = new Product();
 
     mutation.mutate({
-      id: "asd",
+      id: testProduct.id,
       name: testProduct.name,
       description: testProduct.description,
       slug: testProduct.slug,
