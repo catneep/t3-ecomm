@@ -7,7 +7,9 @@ const NewProductForm: React.FC = () => {
   const postMutation = trpc.products.add.useMutation();
   const { register, handleSubmit, watch, formState: { errors }} = useForm<IProduct>();
   const onSubmit: SubmitHandler<IProduct> = data => {
-    data.price = formatPrice(data.price);
+    console.log('Form result:', data);
+    data.price = formatPrice(data.price.toString());
+    data.inventory = Number(data.inventory);
     handleNewEntry(data);
   }
   
@@ -25,15 +27,15 @@ const NewProductForm: React.FC = () => {
     })
   }
   
-  const formatPrice = (price: number):number =>
-    Number(price.toFixed(2)) * 100;
+  const formatPrice = (price: string):number =>
+    Number(Number(price).toFixed(2)) * 100;
   
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor='product-name'>Name</label>
-          <input { ...register('name') } type="text" name="name" id="product-name" placeholder='My product'/>
+          <input { ...register('name') } type="text" name="name" id="product-name" placeholder='My product' minLength={3}/>
         </div>
         <div>
           <label htmlFor='product-description'>Description</label>
@@ -41,12 +43,14 @@ const NewProductForm: React.FC = () => {
         </div>
         <div>
           <label htmlFor='product-price'>Price</label>
-          <input { ...register('price') } type='number' name="price" id="product-price" placeholder='$0.00' min={1}/>
+          <input { ...register('price') } type='number' name="price" id="product-price" placeholder='$0.00' min={1} />
         </div>
         <div>
           <label htmlFor='product-inventory'>Inventory</label>
-          <input { ...register('name') } type="number" name="inventory" id="product-inventory" placeholder='100' min={0} max={9999}/>
+          <input { ...register('inventory') } type="number" name="inventory" id="product-inventory" placeholder='100' min={0} max={9999}/>
         </div>
+
+        <input type='submit' />
       </form>
     </>
   );

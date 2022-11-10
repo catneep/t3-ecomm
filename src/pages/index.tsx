@@ -67,7 +67,9 @@ const Home: NextPage = () => {
                 {
                   allProducts.data.map(
                     (product, i) =>
-                    <li key={i}>{product.name}</li>
+                    <li key={i}>
+                      {product.id} - {product.name} | {product.slug}
+                      </li>
                     )
                   }
                 </ul>

@@ -18,6 +18,19 @@ export const productRouter = router({
       return ctx.prisma.product.findUnique({where: {id:input.id}});
     }),
 
+  getBySlug: publicProcedure
+    .input(
+      z.object(
+        {
+          slug: z.string()
+        }
+      )
+    )
+    .query(({ ctx, input }) => {
+      // Can be accessed from .data in response
+      return ctx.prisma.product.findUnique({where: {slug:input.slug}});
+    }),
+
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.product.findMany();
   }),
