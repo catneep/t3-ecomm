@@ -1,13 +1,32 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-
 import { trpc } from "../utils/trpc";
+
+import type IProduct from "../models/IProduct";
+import Product from "../models/Product";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-  const productTest = trpc.products.getByID.useQuery( {id: "my-id"});
+  // const productTest = trpc.products.getByID.useQuery( {id: "my-id"});
   const productsTest = trpc.products.getAll.useQuery();
+
+  
+  const mutation = trpc.products.add.useMutation()
+  
+  const handleMutation = () => {
+    // Generates a product with default values
+    const testProduct = new Product();
+
+    mutation.mutate({
+      id: "asd",
+      name: testProduct.name,
+      description: testProduct.description,
+      slug: testProduct.slug,
+      price: testProduct.price,
+      inventory: testProduct.inventory,
+    })
+  }
 
   return (
     <>
@@ -39,29 +58,24 @@ const Home: NextPage = () => {
         </div>
         <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
           {
-            productTest.data
+            productsTest.data
             ? <>
-                <p>{productTest.data.queryID}</p>
-                <p>{productTest.data.response.example}</p>
+                <p>My products:</p>
+                <ul>
+                {
+                  productsTest.data.map(
+                    (product, i) =>
+                    <li key={i}>{product.name}</li>
+                    )
+                  }
+                </ul>
               </>
-            : <p>Loading product..</p>
+            : <p>Getting all products...</p>
           }
         </div>
-        {
-          productsTest.data
-          ? <>
-              <p>My products:</p>
-              <ul>
-              {
-                productsTest.data.map(
-                  (product, i) =>
-                  <li key={i}>{product.name}</li>
-                )
-              }
-              </ul>
-            </>
-          : <p>Getting all products...</p>
-        }
+        <div>
+          <button onClick={handleMutation}>Mutate</button>
+        </div>
       </main>
     </>
   );
