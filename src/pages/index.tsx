@@ -6,6 +6,8 @@ import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  const productTest = trpc.products.getByID.useQuery( {id: "my-id"});
+  const productsTest = trpc.products.getAll.useQuery();
 
   return (
     <>
@@ -31,30 +33,35 @@ const Home: NextPage = () => {
             description="Strongly typed programming language that builds on JavaScript, giving you better tooling at any scale"
             documentation="https://www.typescriptlang.org/"
           />
-          <TechnologyCard
-            name="TailwindCSS"
-            description="Rapidly build modern websites without ever leaving your HTML"
-            documentation="https://tailwindcss.com/"
-          />
-          <TechnologyCard
-            name="tRPC"
-            description="End-to-end typesafe APIs made easy"
-            documentation="https://trpc.io/"
-          />
-          <TechnologyCard
-            name="Next-Auth"
-            description="Authentication for Next.js"
-            documentation="https://next-auth.js.org/"
-          />
-          <TechnologyCard
-            name="Prisma"
-            description="Build data-driven JavaScript & TypeScript apps in less time"
-            documentation="https://www.prisma.io/docs/"
-          />
         </div>
         <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
+        <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
+          {
+            productTest.data
+            ? <>
+                <p>{productTest.data.queryID}</p>
+                <p>{productTest.data.response.example}</p>
+              </>
+            : <p>Loading product..</p>
+          }
+        </div>
+        {
+          productsTest.data
+          ? <>
+              <p>My products:</p>
+              <ul>
+              {
+                productsTest.data.map(
+                  (product, i) =>
+                  <li key={i}>{product.name}</li>
+                )
+              }
+              </ul>
+            </>
+          : <p>Getting all products...</p>
+        }
       </main>
     </>
   );
