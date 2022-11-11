@@ -9,6 +9,7 @@ import type NavigationItem from "../models/NavigationItem";
 const MyApp: AppType = ({ Component, pageProps }) => {
   const navItems: Array<NavigationItem> = [];
   navItems.push({text: 'Home', url: '/'});
+  navItems.push({text: 'Cart', url: '/cart'});
   navItems.push({text: 'Create new product', url: '/new'});
 
   return(

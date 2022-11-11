@@ -6,7 +6,7 @@
 interface IProduct {
   id: string,
   name: string,
-  slug: string;
+  slug: string | undefined; // Allows to regenerate the slug on edit
   price:number,
   inventory:number,
   description:string,
