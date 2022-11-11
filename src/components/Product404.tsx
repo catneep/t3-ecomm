@@ -7,7 +7,7 @@ const Product404 = () => {
         Woah! you sure about that?
       </h1>
       <p className="w-full text-center font-semibold text-3xl">
-        We couldn't find what you were looking for 😕
+        We couldn&apos;t find what you were looking for 😕
       </p>
       <p className="w-full text-center my-9 text-2xl">
         Try going back <Link href='/' className="underline font-semibold">home</Link> 🏠

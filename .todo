@@ -3,5 +3,5 @@
 ✔ Handle DB actions @done
 ✔ Fetch data from Client @done
 ✔ Handle Cart @done
-☐ Handle Cart edition within itself
-☐ Make Cart pretty
+✔ Handle Cart edition within itself @done
+☐ Change state on cookie change

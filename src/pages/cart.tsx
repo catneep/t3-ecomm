@@ -19,8 +19,8 @@ const CartPage: NextPage = () => {
       </Head>
 
 
-      <main className="product-bg">
-        <div className="card-backdrop pt-4 px-3">
+      <main className="flex w-full product-bg sm:px-4 lg:px-0">
+        <div className="card-backdrop pt-4 px-3 w-full">
           <header className="font-semibold text-2xl ml-2 mb-4">
             <h1>My Cart 🛒</h1>
           </header>

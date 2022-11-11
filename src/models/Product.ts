@@ -19,7 +19,9 @@ class Product {
   }
 
   public generateSlug(name: string, id: string): string{
-    const cleanName = name.trim().toLowerCase().replaceAll(' ', '-');
+    const cleanName = name.length < 10
+      ? name.trim().toLowerCase().replaceAll(' ', '-')
+      : name.substring(0, 10).trim().toLowerCase().replaceAll(' ', '-')
     return `${cleanName}-${id.substring(0,8)}`;
   }
 }

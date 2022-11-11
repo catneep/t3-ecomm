@@ -7,6 +7,8 @@ import type IProduct from "../models/IProduct";
 import Link from "next/link";
 import Product404 from "../components/Product404";
 import Spinner from "../components/Spinner";
+import { useState } from "react";
+import { addToCartCookie } from "../tools/CookieUtils";
 
 const ProductDetails: NextPage = () => {
   const router = useRouter();
@@ -27,7 +29,7 @@ const ProductDetails: NextPage = () => {
           product.isFetching
           ? <Spinner />
           : product.data ?
-            LocalProductView(product.data)
+            <LocalProductView product={product.data}/>
             : <Product404 />
         }
       </main>
@@ -37,11 +39,34 @@ const ProductDetails: NextPage = () => {
 
 export default ProductDetails;
 
-function LocalProductView(product: IProduct) {
+type LocalProductViewProps = {
+  product: IProduct;
+}
+
+const LocalProductView: React.FC<LocalProductViewProps> = ({
+  product
+}) => {
   const formatPrice = (price: string): string[] => price.split('.');
 
+  const [shake, setShake] = useState(false);
+  const [zoom, setZoom] = useState(false);
+  
+  const animate = (result: boolean) => {    
+    if (!result) {
+      setShake(true);
+      setTimeout(() => setShake(false), 100);
+    } else {
+      setZoom(true);
+      setTimeout(() => setZoom(false), 1000);
+    }
+  }
+
+  const handleCart = (product: IProduct) => {
+    animate(addToCartCookie(product));
+  }
+
   return (
-    <div className="max-w-screen-lg min-h-full rounded-xl bg-white pb-12">
+    <div className="card-backdrop">
       <div className="w-full px-10 py-6 grid grid-cols-2 gap-4">
         <section className="">
           <img
@@ -55,7 +80,7 @@ function LocalProductView(product: IProduct) {
         <section className="p-1 pl-3 border-l-2">
           <header className="flex flex-col">
             <div className="w-full flex items-center justify-between">
-              <h1 className="font-semibold text-3xl ml-1">
+              <h1 className="font-semibold text-3xl ml-1 w-max">
                 {product.name}
               </h1>
               <section className="text-sm">
@@ -63,12 +88,12 @@ function LocalProductView(product: IProduct) {
                   href={`/edit?slug=${product.slug}`}
                   className="mr-2"
                   >
-                  Edit ✏
+                  <span className="hidden md:inline">Edit</span> ✏
                 </Link>
                 <Link
                   href={`/delete?slug=${product.slug}`}
                 >
-                  Delete 🧺
+                  <span className="hidden md:inline">Delete</span> 🧺
                 </Link>
               </section>
             </div>
@@ -81,8 +106,8 @@ function LocalProductView(product: IProduct) {
                 .{formatPrice((product.price / 100).toFixed(2))[1]}
               </span>
             </h2>
-            <button className="product-view-cart-btn">
-              Add to cart 🛒
+            <button className={`product-view-cart-btn ${shake ? 'shake' : ''}`} onClick={() => handleCart(product)}>
+              { !zoom ? 'Add to cart 🛒' : 'Done!'}
             </button>
           </header>
 

@@ -16,3 +16,39 @@
 .product-bg {
     @apply w-full items-start min-h-screen py-4 bg-gray-300 justify-center;
 }
+
+.add-to-cart-btn {
+    @apply flex w-full justify-center bg-blue-500 rounded-md py-2 text-white font-semibold duration-200;
+}
+
+.cart-item {
+    @apply flex w-full justify-around py-4 items-center border-b-2 border-slate-200;
+}
+
+.cart-quantity-container {
+    @apply rounded-l-md rounded-r-md p-0 m-0;
+}
+
+.cart-quantity-btn {
+    @apply bg-slate-400 text-white text-center px-3 font-bold items-center min-h-full;
+}
+
+.cart-quantity-btn.disabled{
+    @apply bg-slate-200 border-slate-200
+}
+
+.card-backdrop {
+    @apply max-w-screen-lg min-h-full rounded-xl bg-white pb-12;
+}
+
+.shake{
+    background-color: red !important;
+    animation: shake 0.2s infinite;
+}
+@keyframes shake {
+  0%  { transform: translate(0px, 0px);  }
+  25% { transform: translate(2px, 0px);  }
+  50% { transform: translate(-2px, 0px); }
+  75% { transform: translate(1px, 0px); }
+  100%{ transform: translate(0px, 0px); }
+}

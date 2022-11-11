@@ -40,18 +40,20 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {HeroBanner()}
+      <HeroBanner />
 
       <main className="container mx-auto my-3 flex flex-col items-center justify-center p-4">
 
         <div className="flex flex-wrap w-full pt-6 pb-6">
           {
-            allProducts.data
+            allProducts.isFetching
+            ? <Spinner />
+            : allProducts.data && allProducts.data.length > 0
             ? <>
                 <h2 className="text-3xl text-gray-700">
                   Our products
                 </h2>
-                <ul className="w-full px-10 grid grid-cols-4 gap-4">
+                <ul className="w-full px-10 grid sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {
                   allProducts.data.map(
                     (product, i) =>
@@ -60,7 +62,14 @@ const Home: NextPage = () => {
                   }
                 </ul>
               </>
-            : <Spinner />
+            : <div className="flex flex-wrap w-full justify-center items-center font-bold my-12">
+                <h3 className="w-full text-center text-3xl">
+                  There&apos;s nothing here! 🕵️‍♂️
+                </h3>
+                <h4 className="block w-full text-center text-xl text-gray-500">
+                  Try <Link href='/new' className="underline font-semibold">creating a new product</Link>
+                </h4>
+              </div>
           }
         </div>
 
@@ -100,7 +109,7 @@ const randomImageURL = ():string => {
   return options[randomIndex] as string;
 }
 
-function HeroBanner(){
+const HeroBanner: React.FC = () => {
   /// Based on: https://flowbite.com/blocks/marketing/hero/
 
   return (
@@ -111,7 +120,7 @@ function HeroBanner(){
                 Whatever you need, whenever you want it.
               </h1>
               <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
-                Anything, we will quite literally travel the entire globe in order to fulfill your wishes, as long as it is listed in our products.
+                Anything, we will quite literally travel the entire globe in order to fulfill your wishes, as long as it is listed in our products 😉
               </p>
               <Link target="_blank" referrerPolicy="no-referrer" href='https://www.github.com/catneep' className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                   Learn more

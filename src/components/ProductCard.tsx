@@ -1,8 +1,10 @@
 /// Design based on: https://tailwindcomponents.com/component/food-card
 
 import Link from "next/link";
-// import Image from 'next/image';
+import { useState } from "react";
+
 import type IProduct from "../models/IProduct";
+import { addToCartCookie } from "../tools/CookieUtils";
 
 type ProductCardProps = {
   product: IProduct;
@@ -11,9 +13,21 @@ type ProductCardProps = {
 const ProductCard: React.FC<ProductCardProps> = ({
   product
 }) => {
-  // TODO
-  const handleCart = (product: IProduct) =>{
-    console.log('Added to cart', product);
+  const [shake, setShake] = useState(false);
+  const [zoom, setZoom] = useState(false);
+
+  const animate = (result: boolean) => {    
+    if (!result) {
+      setShake(true);
+      setTimeout(() => setShake(false), 100);
+    } else {
+      setZoom(true);
+      setTimeout(() => setZoom(false), 90);
+    }
+  }
+
+  const handleCart = (product: IProduct) => {
+    animate(addToCartCookie(product));
   }
 
   return (
@@ -44,7 +58,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           </div>
           <div className="mt-2">
-            <button className="flex w-full justify-center bg-blue-500 rounded-md py-2 text-white font-semibold" onClick={() => handleCart(product)} >
+            <button
+              className={`add-to-cart-btn ${zoom ? 'scale-110' : ''} ${shake ? 'shake' : ''}`}
+              onClick={() => handleCart(product)}
+            >
               Add to cart 🛒
             </button>
           </div>
