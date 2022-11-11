@@ -4,6 +4,7 @@ import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
 import MainNavigation from "../components/MainNavigation";
+import Footer from "../components/Footer";
 import type NavigationItem from "../models/NavigationItem";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -16,6 +17,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <MainNavigation items={navItems}/>
       <Component {...pageProps} />
+      <Footer />
     </>
   );
 };

@@ -13,15 +13,7 @@ const NewProduct: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header>
-        <h1>
-          New Product
-        </h1>
-        <p>
-          Please fill the following for in order to register a product.
-        </p>
-      </header>
-      <main>
+      <main className="pt-4">
         <NewProductForm />
       </main>
 
