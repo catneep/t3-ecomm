@@ -5,9 +5,10 @@ import { trpc } from "../utils/trpc";
 
 import type IProduct from "../models/IProduct";
 import Product from "../models/Product";
+import ProductCard from "../components/ProductCard";
+import Spinner from "../components/Spinner";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const allProducts = trpc.products.getAll.useQuery();  
   const postMutation = trpc.products.add.useMutation();
   const deleteMutation = trpc.products.removeAll.useMutation();
@@ -36,81 +37,88 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
-        <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
-          Create <span className="text-purple-300">T3</span> App
-        </h1>
-        <p className="text-2xl text-gray-700">This stack uses:</p>
-        <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
-          <TechnologyCard
-            name="NextJS"
-            description="The React framework for production"
-            documentation="https://nextjs.org/"
-          />
-          <TechnologyCard
-            name="TypeScript"
-            description="Strongly typed programming language that builds on JavaScript, giving you better tooling at any scale"
-            documentation="https://www.typescriptlang.org/"
-          />
-        </div>
-        <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
-          {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
-        </div>
-        <div className="flex flex-wrap w-full items-center justify-center pt-6">
+      {HeroBanner()}
+
+      <main className="container mx-auto my-3 flex flex-col items-center justify-center p-4">
+
+        <div className="flex flex-wrap w-full pt-6 pb-6">
           {
             allProducts.data
-            ? <div>
-                <p className="w-full text-2xl text-blue-500">
-                  My products:
-                </p>
-                <ul className="w-full">
+            ? <>
+                <h2 className="text-3xl text-gray-700">
+                  Our products
+                </h2>
+                <ul className="w-full px-10 grid grid-cols-4 gap-4">
                 {
                   allProducts.data.map(
                     (product, i) =>
-                    <li key={i}>
-                      {product.id} - {product.name} | {product.slug}
-                      </li>
+                      <ProductCard product={product} key={i} />
                     )
                   }
                 </ul>
-              </div>
-            : <p>Getting all products...</p>
+              </>
+            : <Spinner />
           }
         </div>
-        <div className="flex justify-evenly w-full">
-          <button onClick={handleNewEntry}>Create new entry</button>
-          <button onClick={handleWipeAll}>Wipe DB</button>
-        </div>
+
       </main>
+      <section className=" bg-gray-500 w-full pt-8">
+        <header>
+          <h2 className="text-center text-3xl text-white">
+            Other actions
+          </h2>
+        </header>
+        <div className="flex justify-evenly w-full py-12">
+          <button onClick={handleNewEntry}
+            className='bg-blue-500 text-white p-6 rounded-lg text-lg'
+          >
+            ✒ Register default product
+          </button>
+          <button onClick={handleWipeAll}
+            className='bg-blue-500 text-white p-6 rounded-lg text-lg'
+          >
+            🔥 Wipe all products from DB
+          </button>
+        </div>
+      </section>
     </>
   );
 };
 
 export default Home;
 
-type TechnologyCardProps = {
-  name: string;
-  description: string;
-  documentation: string;
-};
+const randomImageURL = ():string => {
+  const options = [
+    'https://www.seekpng.com/png/full/258-2588310_coffee-bobs-bag-of-coffee-beans-png.png',
+    'https://i.pinimg.com/originals/5c/9f/71/5c9f71b2e196ccf71e72eb88b9f75be8.png',
+    'https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png',
+  ];
+  const randomIndex = Math.floor(Math.random() * options.length);
+  return options[randomIndex] as string;
+}
 
-const TechnologyCard: React.FC<TechnologyCardProps> = ({
-  name,
-  description,
-  documentation,
-}) => {
+function HeroBanner(){
+  /// Based on: https://flowbite.com/blocks/marketing/hero/
+
   return (
-    <section className="flex flex-col justify-center rounded border-2 border-gray-500 p-6 shadow-xl duration-500 motion-safe:hover:scale-105">
-      <h2 className="text-lg text-gray-700">{name}</h2>
-      <p className="text-sm text-gray-600">{description}</p>
-      <Link
-        className="m-auto mt-3 w-fit text-sm text-violet-500 underline decoration-dotted underline-offset-2"
-        href={documentation}
-        target="_blank"
-        rel="noreferrer"
-      >
-        Documentation
-      </Link>
+    <section className="bg-white dark:bg-gray-900">
+      <div className="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+          <div className="mr-auto place-self-center lg:col-span-7">
+              <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
+                Whatever you need, whenever you want it.
+              </h1>
+              <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+                Anything, we will quite literally travel the entire globe in order to fulfill your wishes, as long as it is listed in our products.
+              </p>
+              <Link target="_blank" referrerPolicy="no-referrer" href='https://www.github.com/catneep' className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                  Learn more
+              </Link> 
+          </div>
+          <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
+              {/* <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png" alt="mockup" /> */}
+              <img src={randomImageURL()} alt="hero image" />
+          </div>                
+      </div>
     </section>
   );
-};
+}
