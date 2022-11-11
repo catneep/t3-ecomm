@@ -97,6 +97,7 @@ const NewProductForm: React.FC = () => {
                         id="product-price"
                         placeholder="$1.00"
                         required
+                        step='any'
 
                         type="number"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"

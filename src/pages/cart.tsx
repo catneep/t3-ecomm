@@ -1,9 +1,15 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import CartView from "../components/CartView";
+import Cart from "../models/Cart";
 import { trpc } from "../utils/trpc";
 
-const Cart: NextPage = () => {
+import { buildCartFromCookie } from "../tools/CookieUtils";
+
+const CartPage: NextPage = () => {
+  const currentCart = buildCartFromCookie();
+
   return (
     <>
       <Head>
@@ -12,12 +18,21 @@ const Cart: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header>
-        <h1>My Cart</h1>
-      </header>
+
+      <main className="product-bg">
+        <div className="card-backdrop pt-4 px-3">
+          <header className="font-semibold text-2xl ml-2 mb-4">
+            <h1>My Cart 🛒</h1>
+          </header>
+
+          <section className="mx-8">
+            <CartView cart={currentCart}/>
+          </section>
+        </div>
+      </main>
 
     </>
   );
 }
 
-export default Cart;
+export default CartPage;

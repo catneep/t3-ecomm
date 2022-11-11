@@ -4,9 +4,9 @@ class CartItem {
   public product: IProduct;
   public quantity: number;
 
-  constructor(product: IProduct){
+  constructor(product: IProduct, quantity: number | undefined){
       this.product = product;
-      this.quantity = 1;
+      this.quantity = quantity ?? 1;
   }
 
   /**
