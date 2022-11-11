@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type Cart from "../models/Cart"
+import { buildCartFromCookie } from "../tools/CookieUtils";
 import CartItemView from "./CartItemView";
 
 type CartViewProps = {
@@ -11,6 +12,10 @@ const CartView: React.FC<CartViewProps> = ({
 }) => {
   const [total, setTotal] = useState(cart.getTotal());
 
+  const handleComponentCallback = () => {
+    setTotal(buildCartFromCookie().getTotal())
+  }
+
   return (
     <>
       <section>
@@ -18,7 +23,7 @@ const CartView: React.FC<CartViewProps> = ({
           {
             cart.elements.length > 0
             ? cart.elements.map( (item, i) =>
-                <CartItemView key={i} item={item} onCallback={setTotal}/>
+                <CartItemView key={i} item={item} onCallback={handleComponentCallback}/>
               )
             : <p>Your cart is empty 😢</p>
           }

@@ -7,21 +7,27 @@ import type IProduct from "../models/IProduct";
 import { useState } from "react";
 
 type CartItemViewProps = {
-  item: ICartItem;
+  item: ICartItem,
+  onCallback: () => void
 }
 
 const CartItemView: React.FC<CartItemViewProps> = ({
-  item
+  item,
+  onCallback
 }) => {
   const [count, setCount] = useState(item.quantity);
 
   const increase = (product: IProduct) => {
-    if (addToCartCookie(product))
-      setCount(count + 1)
+    if (addToCartCookie(product)){
+      setCount(count + 1);
+      onCallback()
+    }
   }
   const decrease = (product: IProduct) => {
-    if (reduceInCartCookie(product))
-      setCount(count - 1)
+    if (reduceInCartCookie(product)){
+      setCount(count - 1);
+      onCallback();
+    }
   }
   return (
     <>
