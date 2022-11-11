@@ -1,9 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import CartView from "../components/CartView";
-import Cart from "../models/Cart";
-import { trpc } from "../utils/trpc";
 
 import { buildCartFromCookie } from "../tools/CookieUtils";
 

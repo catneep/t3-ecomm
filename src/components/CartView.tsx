@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type Cart from "../models/Cart"
 import CartItemView from "./CartItemView";
 
@@ -8,6 +9,7 @@ type CartViewProps = {
 const CartView: React.FC<CartViewProps> = ({
   cart
 }) => {
+  const [total, setTotal] = useState(cart.getTotal());
 
   return (
     <>
@@ -16,7 +18,7 @@ const CartView: React.FC<CartViewProps> = ({
           {
             cart.elements.length > 0
             ? cart.elements.map( (item, i) =>
-                <CartItemView key={i} item={item} />
+                <CartItemView key={i} item={item} onCallback={setTotal}/>
               )
             : <p>Your cart is empty 😢</p>
           }
@@ -24,7 +26,7 @@ const CartView: React.FC<CartViewProps> = ({
       </section>
       <section className="flex justify-end items-center pr-4">
         <span className="text-lg">
-          Total: <span className="font-semibold text-xl">$ {(cart.getTotal() / 100).toFixed(2)}</span>
+          Total: <span className="font-semibold text-xl">$ {(total / 100).toFixed(2)}</span>
         </span>
       </section>
     </>
