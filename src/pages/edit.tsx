@@ -20,7 +20,7 @@ const EditProduct: NextPage = () => {
         <meta name="description" content="Edit a product" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="pt-4">
+      <main className="product-bg">
         {
           product.isFetching
           ? <Spinner />

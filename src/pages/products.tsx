@@ -3,11 +3,10 @@ import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 
-import IProduct from "../models/IProduct";
+import type IProduct from "../models/IProduct";
 import Link from "next/link";
 import Product404 from "../components/Product404";
 import Spinner from "../components/Spinner";
-import { useState } from "react";
 
 const ProductDetails: NextPage = () => {
   const router = useRouter();
@@ -23,7 +22,7 @@ const ProductDetails: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full items-start min-h-screen py-4 bg-gray-300 justify-center">
+      <main className="flex product-bg">
         {
           product.isFetching
           ? <Spinner />

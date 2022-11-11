@@ -13,7 +13,7 @@ const NewProduct: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="pt-4">
+      <main className="product-bg">
         <NewProductForm />
       </main>
 

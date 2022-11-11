@@ -12,3 +12,7 @@
 .product-view-cart-btn {
     @apply flex w-full justify-center bg-blue-500 rounded-md py-3 text-white mt-12 mx-2 text-lg font-semibold duration-300 motion-safe:hover:scale-105;
 }
+
+.product-bg {
+    @apply w-full items-start min-h-screen py-4 bg-gray-300 justify-center;
+}
