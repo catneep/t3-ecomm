@@ -3,31 +3,34 @@ import Head from "next/head";
 import Link from "next/link";
 import { trpc } from "../utils/trpc";
 
-import type IProduct from "../models/IProduct";
 import Product from "../models/Product";
 import ProductCard from "../components/ProductCard";
 import Spinner from "../components/Spinner";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const allProducts = trpc.products.getAll.useQuery();  
   const postMutation = trpc.products.add.useMutation();
   const deleteMutation = trpc.products.removeAll.useMutation();
   
-  const handleNewEntry = () => {
+  const handleNewEntry = async () => {
     // Generates a product with default values
     const testProduct = new Product();
 
-    postMutation.mutate({
+    postMutation.mutateAsync({
       id: testProduct.id,
       name: testProduct.name,
       description: testProduct.description,
       slug: testProduct.slug,
       price: testProduct.price,
       inventory: testProduct.inventory,
-    })
+    }).then( () => router.reload())
   }
 
-  const handleWipeAll = () => deleteMutation.mutate();
+  const handleWipeAll = async () =>
+    deleteMutation.mutateAsync()
+      .then( () => router.reload());
 
   return (
     <>

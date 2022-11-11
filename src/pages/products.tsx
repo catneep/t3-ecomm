@@ -2,10 +2,12 @@ import Head from "next/head";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
+
 import IProduct from "../models/IProduct";
 import Link from "next/link";
 import Product404 from "../components/Product404";
 import Spinner from "../components/Spinner";
+import { useState } from "react";
 
 const ProductDetails: NextPage = () => {
   const router = useRouter();
@@ -46,7 +48,6 @@ function LocalProductView(product: IProduct) {
           <img
             className="rounded-md"
             alt={product.name}
-            // src="https://source.unsplash.com/MNtag_eXMKw/1600x900"
             src="https://picsum.photos/1600/900"
             width={1600}
             height={900}
@@ -62,12 +63,14 @@ function LocalProductView(product: IProduct) {
                 <Link
                   href={`/edit?slug=${product.slug}`}
                   className="mr-2"
-                >
+                  >
                   Edit ✏
                 </Link>
-                <button>
+                <Link
+                  href={`/delete?slug=${product.slug}`}
+                >
                   Delete 🧺
-                </button>
+                </Link>
               </section>
             </div>
             <p className="w-full block text-gray-400 my-3 mt-1 ml-1">
@@ -79,7 +82,7 @@ function LocalProductView(product: IProduct) {
                 .{formatPrice((product.price / 100).toFixed(2))[1]}
               </span>
             </h2>
-            <button className="flex w-100 justify-center bg-blue-500 rounded-md py-3 text-white mt-12 mx-2 text-lg font-semibold duration-300 motion-safe:hover:scale-105">
+            <button className="product-view-cart-btn">
               Add to cart 🛒
             </button>
           </header>

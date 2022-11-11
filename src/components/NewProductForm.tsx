@@ -2,8 +2,10 @@ import { trpc } from "../utils/trpc";
 import { useForm, SubmitHandler } from "react-hook-form";
 import type IProduct from "../models/IProduct";
 import Product from "../models/Product";
+import { useRouter } from "next/router";
 
 const NewProductForm: React.FC = () => {
+  const router = useRouter();
   const formTitle = "Register a product";
   const postMutation = trpc.products.add.useMutation();
   const { register, handleSubmit, watch, formState: { errors }} = useForm<IProduct>();
@@ -14,18 +16,18 @@ const NewProductForm: React.FC = () => {
     handleNewEntry(data);
   }
 
-  const handleNewEntry = (values: IProduct) => {
+  const handleNewEntry = async (values: IProduct) => {
     // Generates a product with default values
     const newProduct = new Product(values);
     
-    postMutation.mutate({
+    postMutation.mutateAsync({
       id: newProduct.id,
       name: newProduct.name,
       description: newProduct.description,
       slug: newProduct.slug,
       price: newProduct.price,
       inventory: newProduct.inventory,
-    })
+    }).then( () => router.push(`/products?slug=${newProduct.slug}`));
   }
   
   const formatPrice = (price: string):number =>

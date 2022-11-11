@@ -5,8 +5,9 @@ import { trpc } from "../utils/trpc";
 import EditProductForm from "../components/EditProductForm";
 import { useRouter } from "next/router";
 import Product404 from "../components/Product404";
+import Spinner from "../components/Spinner";
 
-const EditProducrt: NextPage = () => {
+const EditProduct: NextPage = () => {
   const router = useRouter();
   const slug = router.query.slug as string;
 
@@ -15,14 +16,14 @@ const EditProducrt: NextPage = () => {
   return (
     <>
       <Head>
-        <title>New Product</title>
+        <title>Edit Product</title>
         <meta name="description" content="Edit a product" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="pt-4">
         {
           product.isFetching
-          ? <p>Loading... ⌛</p>
+          ? <Spinner />
           : product.data
             ? <>
                 <EditProductForm product={product.data} />
@@ -35,4 +36,4 @@ const EditProducrt: NextPage = () => {
   );
 }
 
-export default EditProducrt;
+export default EditProduct;

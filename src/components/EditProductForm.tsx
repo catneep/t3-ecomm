@@ -2,6 +2,7 @@ import { trpc } from "../utils/trpc";
 import { useForm, SubmitHandler } from "react-hook-form";
 import type IProduct from "../models/IProduct";
 import Product from "../models/Product";
+import { useRouter } from "next/router";
 
 type EditProductFormProps = {
   product: IProduct;
@@ -10,6 +11,7 @@ type EditProductFormProps = {
 const EditProductForm: React.FC<EditProductFormProps> = ({
   product
 }) => {
+  const router = useRouter();
   const formTitle = "Edit a product";
   const putMutation = trpc.products.edit.useMutation();
   const { register, handleSubmit, watch, formState: { errors }} = useForm<IProduct>();
@@ -20,19 +22,19 @@ const EditProductForm: React.FC<EditProductFormProps> = ({
     handleEditedEntry(product, data);
   }
 
-  const handleEditedEntry = (product: IProduct, newValues: IProduct) => {
+  const handleEditedEntry = async (product: IProduct, newValues: IProduct) => {
     newValues.id = product.id;
     newValues.slug = undefined;
     const newProduct = new Product(newValues);
     
-    putMutation.mutate({
+    putMutation.mutateAsync({
       id: newProduct.id,
       name: newProduct.name,
       description: newProduct.description,
       slug: newProduct.slug,
       price: newProduct.price,
       inventory: newProduct.inventory,
-    })
+    }).then( () => router.push(`/products?slug=${newProduct.slug}`));
   }
   
   const formatPrice = (price: string):number =>
