@@ -1,6 +1,7 @@
 ✔ Create product models @done
 ✔ API endpoints with tRPC @done
 ✔ Handle DB actions @done
-☐ Fetch data from Client
-☐ Handle Cart
-☐ Make pretty
+✔ Fetch data from Client @done
+✔ Handle Cart @done
+☐ Handle Cart edition within itself
+☐ Make Cart pretty

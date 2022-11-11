@@ -1,11 +1,11 @@
 import { type AppType } from "next/app";
-
 import { trpc } from "../utils/trpc";
 
-import "../styles/globals.css";
 import MainNavigation from "../components/MainNavigation";
 import Footer from "../components/Footer";
 import type NavigationItem from "../models/NavigationItem";
+
+import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const navItems: Array<NavigationItem> = [];
